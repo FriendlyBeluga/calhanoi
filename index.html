@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=`, initial-scale=1.0">
+    <title>คำนวนหวย</title>
+</head>
+<style>
+    * {
+        font-size: 30px;
+    }
+    .container {
+        text-align: center;
+        border: 0.5px solid gray;
+    }
+    input {
+        border-radius: 3px;
+        text-align: center;
+    }
+    .wrapInput {
+        margin-bottom: 0.5rem;
+    }
+    .output {
+        margin-top: 1rem;
+    }
+    .outputError {
+        font-size: 24px;
+        color: red;
+        margin-bottom: 0.5rem;
+    }
+    table {
+        width: 80%;
+    }
+    table, th, td {
+        text-align: center;
+        border: 1px solid black;
+        border-collapse: collapse;
+        margin: 1rem auto;
+        font-weight: lighter;
+    }
+    a {
+        font-size: 24px;
+    }
+    .wrapSubTitle {
+        margin-top: -25px;
+        margin-bottom: 0.5rem;
+    }
+    .textBold {
+        font-weight: bold;
+    }
+    .wrapTip {
+        color: brown;
+    }
+    .wrapAttention p {
+        font-size: 20px;
+        color: red;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1>เว็บคำนวนหวย</h1>
+        <div class="wrapSubTitle">
+            <a>ใช้ได้ทั้ง 4 ฮานอย (เฉพาะกิจ, พิเศษ, ปกติ, VIP)</a>
+        </div>
+        <div class="wrapTip">
+            <a>*ให้กรอกผลของงวดที่แล้ว*</a>
+        </div>
+        <div class="wrapInput">บน
+            <input class="topInput" OnKeyPress="chkNumber(event)" maxlength="3" placeholder="ใส่เลขสามตัวบน" />
+        </div>
+        <div class="wrapInput">ล่าง
+            <input class="botInput" OnKeyPress="chkNumber(event)" maxlength="2" placeholder="ใส่เลขสองตัวล่าง" />
+        </div>
+        <div class="outputError"></div>
+        <button class="calculateButton">คำนวนผลงวดถัดไป</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>ผลเดิม</th>
+                    <th>สูตรที่ 1</th>
+                    <th>สูตรที่ 2</th>
+                    <th>สูตรที่ 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><p class="outputOld textBold">-</p></td>
+                    <td><p class="outputA textBold">-</p></td>
+                    <td><p class="outputB textBold">-</p></td>
+                    <td><p class="outputC textBold">-</p></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="wrapAttention"><p>**ผลที่ได้เป็นเพียงการคำนวนโดยใช้สูตรเฉพาะ โปรดใช้วิจารณญาณในการตัดสินใจก่อนซื้อ</p></div>
+    </div>
+</body>
+</html>
+<script>
+    let calculateButton = document.querySelector(".calculateButton");
+    let topInput = document.querySelector(".topInput");
+    let botInput = document.querySelector(".botInput");
+    let outputA = document.querySelector(".outputA");
+    let outputB = document.querySelector(".outputB");
+    let outputC = document.querySelector(".outputC");
+    let outputOld = document.querySelector(".outputOld");
+    let outputError = document.querySelector(".outputError");
+    calculateButton.addEventListener('click', (event) => {
+        if(topInput.value.length == 3 && botInput.value.length == 2) {
+            outputOld.innerHTML = topInput.value + "-" + botInput.value;
+            let sum = ((parseInt(topInput.value) * parseInt(botInput.value)) / 100).toString().replaceAll(".", "").split("");
+            outputA.innerHTML = [...new Set(sum)].join(", ");
+            outputB.innerHTML = (topInput.value - 106).toString().split("").join(", ");
+            let fomulaFirst = (parseInt(topInput.value.split("")[0]) + parseInt(botInput.value.split("")[0])).toString().split("");
+            let fomulaSecond = (parseInt(topInput.value.split("")[0]) + parseInt(botInput.value.split("")[1])).toString().split("");
+            let firstAndSecond = [fomulaFirst[fomulaFirst.length - 1].toString(), fomulaSecond[fomulaSecond.length - 1].toString()];
+            firstAndSecond = [...new Set(firstAndSecond)].join(", ");
+            outputC.innerHTML = firstAndSecond;
+            outputError.innerHTML = "";
+            topInput.value = "";
+            botInput.value = "";
+        } else {
+            outputError.innerHTML = "กรุณากรอกเลข บน-ล่าง ให้ถูกต้อง!";
+        }
+    })
+    function chkNumber(event) {
+        let e_k = event.keyCode;
+        if (((e_k < 48) || (e_k > 57))) event.returnValue = false;
+    };
+</script>
